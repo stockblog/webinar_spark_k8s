@@ -1,0 +1,51 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: s3read-write-hs-server-test
+  namespace: default
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  image: mcscloud/spark-py:webinar_spark_k8s
+  imagePullPolicy: Always
+  mainApplicationFile: local:///opt/spark/custom_jobs/s3read_write.py
+  sparkVersion: "3.0.1"
+  restartPolicy:
+    type: OnFailure
+    onFailureRetries: 3
+    onFailureRetryInterval: 20
+    onSubmissionFailureRetries: 5
+    onSubmissionFailureRetryInterval: 20
+  sparkConf:
+    #Don`t do this in prod. Save creds in Secret
+    "spark.hadoop.fs.s3a.access.key": "PLACE_S3_ACCESS_KEY_HERE"
+    "spark.hadoop.fs.s3a.secret.key": "PLACE_S3_SECRET_KEY_HERE"
+    "spark.eventLog.enabled": "true"
+    "spark.eventLog.dir": "s3a://spark-hs/spark-hs"
+    "spark.hadoop.fs.s3a.endpoint": "https://hb.bizmrg.com"
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "512m"
+    labels:
+      version: 3.0.1
+    serviceAccount: spark
+    envFrom:
+    - secretRef:
+        name: s3-secret
+    - configMapRef:
+        name: s3path-config
+  executor:
+    cores: 1
+    instances: 1
+    memory: "512m"
+    labels:
+      version: 3.0.1
+    envFrom:
+    - secretRef:
+        name: s3-secret
+    - configMapRef:
+        name: s3path-config    
+
+

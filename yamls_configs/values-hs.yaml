@@ -3,7 +3,7 @@ s3:
   enableIAM: false
   logDirectory: s3a://spark-hs/spark-hs
   # accessKeyName is an AWS access key ID. Omit for IAM role-based or provider-based authentication.
-  secret: mcs-s3-secret
+  secret: s3-secret
   accessKeyName: S3_ACCESS_KEY
   # secretKey is AWS secret key. Omit for IAM role-based or provider-based authentication.
   secretKeyName: S3_SECRET_KEY
@@ -21,5 +21,3 @@ nfs:
 
 service:
   type: LoadBalancer
-  port: 18080
-  annotations: {}

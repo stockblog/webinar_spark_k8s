@@ -1,8 +1,8 @@
 # Webinar_spark_k8s
-Spark in Kubernetes
+
 
 ### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in Mail.ru Cloud Solutions
-#### Tested with Kubernetes 1.17.4, Spark 3.0.1, Client VM Ubuntu 18.04 
+#### Tested with Kubernetes 1.17.8, Spark 3.0.1, Client VM Ubuntu 18.04 
 
 ## Running Spark on Kubernetes useful links
 
@@ -121,8 +121,6 @@ roleRef:
   name: spark-role
   apiGroup: rbac.authorization.k8s.io
 EOF
-
-
 ```
 
 ### Run demo example
@@ -133,24 +131,26 @@ kubectl apply -f spark-operator/examples/spark-pi.yaml
 kubectl get sparkapplications.sparkoperator.k8s.io
 kubectl describe sparkapplications.sparkoperator.k8s.io spark-pi
 kubectl get pods 
-kubectl logs spark-pi-driver | grep 3.14
+kubectl logs spark-pi-driver | grep 3.1
 ```
 
 ## Part 2. Running custom app
 
 We will use docker-image-tool.sh and docker build context for this tool is $SPARK_HOME.
-So we need to clone spark .py files inside $SPARK_HOME, so they will be accessible within docker image. 
+So we need to clone spark .py files inside $SPARK_HOME, so they will be accessible within docker image.
+
 You could read more about docker-image-tool.sh: https://spark.apache.org/docs/latest/running-on-kubernetes.html#docker-images
+
 More information about docker build context: https://docs.docker.com/engine/reference/builder/
+
 Additonal info about custom docker image for spark: https://www.waitingforcode.com/apache-spark/docker-images-apache-spark-applications/read 
 
 ### Clone repo with examples
 ```console
-cd $SPARK_HOME
-git clone https://github.com/stockblog/webinar_spark_k8s/custom_jobs custom_jobs
-
 cd
-git clone https://github.com/stockblog/webinar_spark_k8s/custom_jobs_yaml custom_jobs_yaml
+git clone https://github.com/stockblog/webinar_spark_k8s/ webinar_spark_k8s
+
+mv webinar_spark_k8s/custom_jobs/ $SPARK_HOME
 ```
 
 ### Build image
@@ -159,66 +159,28 @@ export YOUR_DOCKER_REPO=
 #example export YOUR_DOCKER_REPO=mcscloud
 
 
-sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t s3read_write_test -p ~/custom_jobs_yaml/Dockerfile build
-sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t s3read_write_test -p ~/custom_jobs_yaml/Dockerfile push
+sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t webinar_spark_k8s -p ~/webinar_spark_k8s/yamls_configs/Dockerfile build
+sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t webinar_spark_k8s -p ~/webinar_spark_k8s/yamls_configs/Dockerfile push
 ```
 
 ### Create Secret with credintials for accessing data in S3
+You can obtain credintials for S3 access and create buckets with this help:
+https://mcs.mail.ru/help/ru_RU/s3-start/s3-account 
+https://mcs.mail.ru/help/ru_RU/s3-start/create-bucket
 ```console
 kubectl create secret generic s3-secret --from-literal=S3_ACCESS_KEY='PLACE_YOUR_S3_CRED_HERE' --from-literal=S3_SECRET_KEY='PLACE_YOUR_S3_CRED_HERE'
 ```
 
 ### Create ConfigMap for accessing data in S3
 ```console
-kubectl create configmap s3path-config --from-literal=S3_PATH=s3a://s3-demo/evo_train_new.csv --from-literal=S3_WRITE_PATH=s3a://s3-demo/write/evo_train_csv/
+#REPLACE S3_PATH AND S3_WRITE_PATH WITH YOUR PARAMETERS
+kubectl create configmap s3path-config --from-literal=S3_PATH='s3a://s3-demo/evo_train_new.csv' --from-literal=S3_WRITE_PATH='s3a://s3-demo/write/evo_train_csv/'
 ```
 
 ### Launch spark job
-```consile
-cat <<EOF | kubectl apply -f -
-apiVersion: "sparkoperator.k8s.io/v1beta2"
-kind: SparkApplication
-metadata:
-  name: s3read-write-test
-  namespace: default
-spec:
-  type: Python
-  pythonVersion: "3"
-  mode: cluster
-  image: mcscloud/spark-py:s3read_write_test
-  imagePullPolicy: Always
-  mainApplicationFile: local:///opt/spark/my_examples/s3read_write.py
-  sparkVersion: "3.0.1"
-  restartPolicy:
-    type: OnFailure
-    onFailureRetries: 3
-    onFailureRetryInterval: 10
-    onSubmissionFailureRetries: 5
-    onSubmissionFailureRetryInterval: 20
-  driver:
-    cores: 1
-    coreLimit: "1200m"
-    memory: "512m"
-    labels:
-      version: 3.0.1
-    serviceAccount: spark
-    envFrom:
-    - secretRef:
-        name: s3-secret
-    - configMapRef:
-        name: s3path-config
-  executor:
-    cores: 1
-    instances: 1
-    memory: "512m"
-    labels:
-      version: 3.0.1
-    envFrom:
-    - secretRef:
-        name: s3-secret
-    - configMapRef:
-        name: s3path-config    
-EOF
+```console
+#choose one of example yamls in directory yamls_configs, edit yaml, add your parameters such as docker repo, image, path to files in s3
+kubectl apply -f ~/webinar_spark_k8s/yamls_configs/s3read_write_with_secret_cfgmap.yaml
 ```
 
 ### Monitoring execution and getting status of job
@@ -235,6 +197,7 @@ kubectl get events
 
 https://github.com/helm/charts/tree/master/stable/spark-history-server
 
+### Install Spark History Server
 ```console
 #create namespace for History Server
 kubectl create ns spark-history-server
@@ -244,30 +207,24 @@ kubectl create secret generic s3-secret --from-literal=S3_ACCESS_KEY='PLACE_YOUR
 
 #create yaml file with config for History Server
 #you should create bucket in S3 named spark-hs and directory inside bucket named spark-hs or change names in s3.logDirectory parameter
-cat <<EOF >> values-hs.yaml -
-s3:
-  enableS3: true
-  enableIAM: false
-  logDirectory: s3a://spark-hs/spark-hs
-  # accessKeyName is an AWS access key ID. Omit for IAM role-based or provider-based authentication.
-  secret: s3-secret
-  accessKeyName: S3_ACCESS_KEY
-  # secretKey is AWS secret key. Omit for IAM role-based or provider-based authentication.
-  secretKeyName: S3_SECRET_KEY
-  endpoint: https://hb.bizmrg.com
-
-gcs:
-  enableGCS: false
-  logDirectory: gs://spark-hs/
-
-pvc:
-  enablePVC: false
-
-nfs:
-  enableExampleNFS: false
-EOF
 
 helm repo add stable https://charts.helm.sh/stable
 
-helm install -f values-hs.yaml my-spark-history-server stable/spark-history-server --namespace spark-history-server
+helm install -f ~/webinar_spark_k8s/yamls_configs/values-hs.yaml my-spark-history-server stable/spark-history-server --namespace spark-history-server
 ```
+
+### Get External IP of History Server
+```console
+kubectl get service -n spark-history-server
+```
+
+
+### Launch Spark app with History Server support
+```console
+kubectl apply -f ~/webinar_spark_k8s/yamls_configs/s3_hs_server_test.yaml
+```
+Go to external IP of History Server and check logs of your spark app
+WARNING: In prod you should not expose your Spark History Server to all internet.
+Use service type ClusterIp with VPNaaS or other solutions.
+
+

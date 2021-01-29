@@ -57,7 +57,7 @@ complete -F __start_kubectl k
 ### Install helm
 https://helm.sh/docs/intro/install/
 
-### Install Docker and log in to a Docker registry
+### Install Docker and log into a Docker registry
 https://docs.docker.com/engine/install/ubuntu/
 https://docs.docker.com/engine/reference/commandline/login/
 https://ropenscilabs.github.io/r-docker-tutorial/04-Dockerhub.html 

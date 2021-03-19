@@ -27,7 +27,7 @@ spec:
     #Don`t do this in production. Save creds in Secret
     env:
     - name: S3_ACCESS_KEY
-      value: "PLACE_ACCESS_KEY_HETE"
+      value: "PLACE_ACCESS_KEY_HERE"
     - name: "S3_SECRET_KEY"
       value: "PLACE_SECRET_KEY_HERE"
     - name: "S3_PATH"
@@ -41,7 +41,7 @@ spec:
     #Don`t do this in production. Save creds in Secret
     env:
     - name: "S3_ACCESS_KEY"
-      value: "PLACE_ACCESS_KEY_HETE"
+      value: "PLACE_ACCESS_KEY_HERE"
     - name: "S3_SECRET_KEY"
       value: "PLACE_SECRET_KEY_HERE"
     - name: "S3_PATH"

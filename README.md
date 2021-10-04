@@ -36,7 +36,19 @@ https://youtu.be/hQI-QYJXlVU?t=12317
 
 ## Prerequisites
 
-### Create K8s cluster in mcs and download kubeconfig
+### (Optional) Create host VM  
+It would be easier to create a host VM in cloud  
+All work in the cloud can be done from that VM  
+You can install kubectl, Helm, Docker and all other things on this VM and don`t mess with your own local machine  
+
+How to create VM: https://mcs.mail.ru/help/ru_RU/create-vm/vm-quick-create  
+How to connect: https://mcs.mail.ru/help/ru_RU/vm-connect/vm-connect-nix  
+Steps:  
+1. Create VM  
+2. Connect to VM with SSH  
+3. Perform all steps described further in this instruction from this VM  
+
+### Create K8s cluster in MCS and download kubeconfig
 Instruction: https://mcs.mail.ru/help/kubernetes/clusterfast
 
 Kubernetes as a Service: https://mcs.mail.ru/app/services/containers/add/

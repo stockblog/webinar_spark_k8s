@@ -1,8 +1,9 @@
 # Webinar_spark_k8s
 
+UPDATED for Spark 3.1.2
 
 ### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in Mail.ru Cloud Solutions
-#### Tested with Kubernetes 1.17.8, Spark 3.0.1, Client VM Ubuntu 18.04 
+#### Tested with Kubernetes 1.17.8, Spark 3.1.2, Client VM Ubuntu 18.04 
 
 ## Running Spark on Kubernetes useful links
 
@@ -68,11 +69,13 @@ Please note. For this tutorial i am using spark-3.0.1-bin-hadoop3.2
 
 Extract the Tarball
 ```console
-tar -xvzf spark-3.0.1-bin-hadoop3.2.tgz
+wget https://dlcdn.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz
+
+tar -xvzf spark-3.1.2-bin-hadoop3.2.tgz
 
 nano ~/.profile
 
-export SPARK_HOME=~/spark-3.0.1-bin-hadoop3.2
+export SPARK_HOME=~/spark-3.1.2-bin-hadoop3.2
 alias spark-shell=”$SPARK_HOME/bin/spark-shell”
 
 source ~/.profile
@@ -105,6 +108,9 @@ rules:
   verbs: ["*"]
 - apiGroups: [""]
   resources: ["services"]
+  verbs: ["*"]
+- apiGroups: [""]
+  resources: ["configmaps"]
   verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

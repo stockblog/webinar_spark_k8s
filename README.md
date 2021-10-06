@@ -76,8 +76,8 @@ https://docs.docker.com/engine/reference/commandline/login/
 https://ropenscilabs.github.io/r-docker-tutorial/04-Dockerhub.html 
 
 ### Download spark
-http://spark.apache.org/downloads.html
-Please note. For this tutorial i am using spark-3.0.1-bin-hadoop3.2
+http://spark.apache.org/downloads.html  
+Please note. For this tutorial i am using spark-3.1.2-bin-hadoop3.2
 
 Extract the Tarball
 ```console

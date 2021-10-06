@@ -3,7 +3,7 @@
 UPDATED for Spark 3.1.2
 
 ### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in Mail.ru Cloud Solutions
-#### Tested with Kubernetes 1.17.8, Spark 3.1.2, Client VM Ubuntu 18.04 
+#### Tested with Kubernetes 1.20.4, Spark 3.1.2, Client VM Ubuntu 20.04 
 
 ## Running Spark on Kubernetes useful links
 

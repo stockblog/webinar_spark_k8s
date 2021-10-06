@@ -177,8 +177,8 @@ export YOUR_DOCKER_REPO=
 #example export YOUR_DOCKER_REPO=mcscloud
 
 
-sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t webinar_spark_k8s -p ~/webinar_spark_k8s/yamls_configs/Dockerfile build
-sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t webinar_spark_k8s -p ~/webinar_spark_k8s/yamls_configs/Dockerfile push
+sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t spark_k8s_intel -p ~/webinar_spark_k8s/yamls_configs/Dockerfile build
+sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t spark_k8s_intel -p ~/webinar_spark_k8s/yamls_configs/Dockerfile push
 ```
 
 ### Create Secret with credintials for accessing data in S3

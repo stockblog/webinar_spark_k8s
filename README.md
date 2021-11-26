@@ -99,7 +99,9 @@ source ~/.profile
 
 ```console
 helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
-helm install my-release spark-operator/spark-operator --namespace spark-operator --create-namespace --set sparkJobNamespace=default --set webhook.enable=true
+
+##Here we install specific version (1.1.11) because on 26.11.2021 last version has bugs and doesn`t work properly
+helm install my-release spark-operator/spark-operator --namespace spark-operator --create-namespace --set webhook.enable=true --version 1.1.11
 
 #create service account, role and rolebinding for spark
 cat <<EOF | kubectl apply -f -

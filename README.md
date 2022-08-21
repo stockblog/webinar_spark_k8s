@@ -1,9 +1,9 @@
 # Webinar_spark_k8s
 
-UPDATED for Spark 3.1.2
+UPDATED for Spark 3.1.3
 
 ### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in Mail.ru Cloud Solutions
-#### Tested with Kubernetes 1.20.4, Spark 3.1.2, Client VM Ubuntu 20.04 
+#### Tested with Kubernetes 1.20.4, Spark 3.1.3, Client VM Ubuntu 20.04 
 
 ## Running Spark on Kubernetes useful links
 
@@ -77,17 +77,17 @@ https://ropenscilabs.github.io/r-docker-tutorial/04-Dockerhub.html
 
 ### Download spark
 http://spark.apache.org/downloads.html  
-Please note. For this tutorial i am using spark-3.1.2-bin-hadoop3.2
+Please note. For this tutorial i am using spark-3.1.3-bin-hadoop3.2
 
 Extract the Tarball
 ```console
-wget https://dlcdn.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz
+wget https://dlcdn.apache.org/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz
 
-tar -xvzf spark-3.1.2-bin-hadoop3.2.tgz
+tar -xvzf spark-3.1.3-bin-hadoop3.2.tgz
 
 nano ~/.profile
 
-export SPARK_HOME=~/spark-3.1.2-bin-hadoop3.2
+export SPARK_HOME=~/spark-3.1.3-bin-hadoop3.2
 alias spark-shell=”$SPARK_HOME/bin/spark-shell”
 
 source ~/.profile
@@ -100,8 +100,8 @@ source ~/.profile
 ```console
 helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
 
-##Here we install specific version (1.1.11) because on 26.11.2021 last version has bugs and doesn`t work properly
-helm install my-release spark-operator/spark-operator --namespace spark-operator --create-namespace --set webhook.enable=true --version 1.1.11
+##Here we install specific version (1.1.25) because sometimes last versions has bugs.
+helm install my-release spark-operator/spark-operator --namespace spark-operator --create-namespace --set webhook.enable=true --version 1.1.25
 
 #create service account, role and rolebinding for spark
 cat <<EOF | kubectl apply -f -
@@ -229,7 +229,7 @@ kubectl create secret generic s3-secret --from-literal=S3_ACCESS_KEY='PLACE_YOUR
 #you should create bucket in S3 named spark-hs and directory inside bucket named spark-hs or change names in s3.logDirectory parameter
 
 helm repo add stable https://charts.helm.sh/stable
-
+#Edit values-hs.yaml. You should specify your logDirectory param.
 helm install -f ~/webinar_spark_k8s/yamls_configs/values-hs.yaml my-spark-history-server stable/spark-history-server --namespace spark-history-server
 ```
 
@@ -241,6 +241,7 @@ kubectl get service -n spark-history-server
 
 ### Launch Spark app with History Server support
 ```console
+#Edit s3_hs_server_test.yaml before launch. Fill with your own params.
 kubectl apply -f ~/webinar_spark_k8s/yamls_configs/s3_hs_server_test.yaml
 ```
 Go to external IP of History Server and check logs of your spark app

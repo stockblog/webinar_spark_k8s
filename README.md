@@ -208,7 +208,7 @@ kubectl apply -f ~/webinar_spark_k8s/yamls_configs/s3read_write_with_secret_cfgm
 kubectl get sparkapplications.sparkoperator.k8s.io
 kubectl describe sparkapplications.sparkoperator.k8s.io s3read-write-test
 kubectl get pods
-kubectl logs s3read-write-test-driver
+kubectl logs pod_name
 kubectl get events
 ```
 

@@ -48,6 +48,9 @@ Steps:
 2. Connect to VM with SSH  
 3. Perform all steps described further in this instruction from this VM  
 
+### Download dataset for S3 practice part
+Dataset: https://disk.yandex.ru/d/gn19jm6mVBnwzQ  
+
 ### Create K8s cluster in MCS and download kubeconfig
 Instruction: https://mcs.mail.ru/help/kubernetes/clusterfast
 

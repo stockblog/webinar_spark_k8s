@@ -2,7 +2,7 @@
 
 UPDATED for Spark 3.1.3
 
-### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in Mail.ru Cloud Solutions
+### We will install Spark Operator, test Spark on Kubernetes, build and launch our own custom images in VK Cloud
 #### Tested with Kubernetes 1.20.4, Spark 3.1.3, Client VM Ubuntu 20.04 
 
 ## Running Spark on Kubernetes useful links
@@ -51,8 +51,10 @@ Steps:
 ### Download dataset for S3 practice part
 Dataset: https://disk.yandex.ru/d/gn19jm6mVBnwzQ  
 
-### Create K8s cluster in MCS and download kubeconfig
+### Create K8s cluster in VK Cloud and download kubeconfig
 Instruction: https://mcs.mail.ru/help/kubernetes/clusterfast
+You may have trouble with Gatekeeper.   
+So please delete it. https://mcs.mail.ru/docs/base/k8s/k8s-addons/k8s-gatekeeper/k8s-opa#udalenie
 
 Kubernetes as a Service: https://mcs.mail.ru/app/services/containers/add/
 

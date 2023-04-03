@@ -86,7 +86,7 @@ Please note. For this tutorial i am using spark-3.1.3-bin-hadoop3.2
 
 Extract the Tarball
 ```console
-wget https://dlcdn.apache.org/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz
+wget https://archive.apache.org/dist/spark/spark-3.1.3/spark-3.1.3-bin-hadoop3.2.tgz  
 
 tar -xvzf spark-3.1.3-bin-hadoop3.2.tgz
 

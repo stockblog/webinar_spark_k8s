@@ -52,7 +52,7 @@ Steps:
 Dataset: https://disk.yandex.ru/d/gn19jm6mVBnwzQ  
 
 ### Create K8s cluster in VK Cloud and download kubeconfig
-Instruction: https://mcs.mail.ru/help/kubernetes/clusterfast
+Instruction: https://mcs.mail.ru/help/kubernetes/clusterfast  
 You may have trouble with Gatekeeper.   
 So please delete it. https://mcs.mail.ru/docs/base/k8s/k8s-addons/k8s-gatekeeper/k8s-opa#udalenie
 

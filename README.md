@@ -150,9 +150,9 @@ EOF
 
 ### Run demo example
 ```console
-git clone https://github.com/GoogleCloudPlatform/spark-on-k8s-operator spark-operator
+git clone git clone https://github.com/stockblog/webinar_spark_k8s/ webinar_spark_k8s
 
-kubectl apply -f spark-operator/examples/spark-pi.yaml      
+kubectl apply -f webinar_spark_k8s/yamls_configs/spark-pi.yaml      
 kubectl get sparkapplications.sparkoperator.k8s.io
 kubectl describe sparkapplications.sparkoperator.k8s.io spark-pi
 kubectl get pods 

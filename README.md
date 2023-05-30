@@ -191,7 +191,8 @@ sudo /$SPARK_HOME/bin/docker-image-tool.sh -r $YOUR_DOCKER_REPO -t spark_k8s_int
 ### Create Secret with credintials for accessing data in S3
 You can obtain credintials for S3 access and create buckets with this help:
 https://mcs.mail.ru/help/ru_RU/s3-start/s3-account 
-https://mcs.mail.ru/help/ru_RU/s3-start/create-bucket
+https://mcs.mail.ru/help/ru_RU/s3-start/create-bucket  
+Attention: create simple bucket name without _ or any special symbols. Because sometimes there are strange glitches with special symbols in bucket names.
 ```console
 kubectl create secret generic s3-secret --from-literal=S3_ACCESS_KEY='PLACE_YOUR_S3_CRED_HERE' --from-literal=S3_SECRET_KEY='PLACE_YOUR_S3_CRED_HERE'
 ```

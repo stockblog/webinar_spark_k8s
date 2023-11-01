@@ -176,7 +176,7 @@ Additonal info about custom docker image for spark: https://www.waitingforcode.c
 ### Clone repo with examples
 ```console
 cd
-git clone https://github.com/stockblog/webinar_spark_k8s/webinar_spark_k8s
+git clone https://github.com/stockblog/webinar_spark_k8s/ webinar_spark_k8s
 
 mv webinar_spark_k8s/custom_jobs/ $SPARK_HOME
 ```

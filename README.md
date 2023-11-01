@@ -59,7 +59,7 @@ So please delete it. https://mcs.mail.ru/docs/base/k8s/k8s-addons/k8s-gatekeeper
 Kubernetes as a Service: https://mcs.mail.ru/app/services/containers/add/
 
 ### Install kubectl
-https://mcs.mail.ru/help/ru_RU/k8s-start/connect-k8s
+https://mcs.mail.ru/docs/base/k8s/connect/kubectl
 
 ### Set path to kubeconfig for kubectl
 ```console
@@ -80,7 +80,9 @@ https://docs.docker.com/engine/install/ubuntu/
 https://docs.docker.com/engine/reference/commandline/login/  
 https://ropenscilabs.github.io/r-docker-tutorial/04-Dockerhub.html   
 
-### Download spark
+### Download spark 
+This part used if you want to build your own image.
+
 http://spark.apache.org/downloads.html  
 Please note. For this tutorial i am using spark-3.1.3-bin-hadoop3.2
 
@@ -123,13 +125,7 @@ metadata:
   name: spark-role
 rules:
 - apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["*"]
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["*"]
-- apiGroups: [""]
-  resources: ["configmaps"]
+  resources: ["*"]
   verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -150,7 +146,7 @@ EOF
 
 ### Run demo example
 ```console
-git clone git clone https://github.com/stockblog/webinar_spark_k8s/ webinar_spark_k8s
+git clone https://github.com/stockblog/webinar_spark_k8s
 
 kubectl apply -f webinar_spark_k8s/yamls_configs/spark-pi.yaml      
 kubectl get sparkapplications.sparkoperator.k8s.io
@@ -158,6 +154,13 @@ kubectl describe sparkapplications.sparkoperator.k8s.io spark-pi
 kubectl get pods 
 kubectl logs spark-pi-driver | grep 3.1
 ```
+
+If you get message like check that your cluster has 2 data-nodes (in VK UI) and try again.
+Don't forget to delete previos one using "kubectl delete sparkapplication.sparkoperator.k8s.io/spark-pi"
+```console
+Initial job has not accepted any resources; check your cluster UI to ensure that workers are registered and have sufficient resources
+```
+
 
 ## Part 2. Running custom app
 
@@ -173,7 +176,7 @@ Additonal info about custom docker image for spark: https://www.waitingforcode.c
 ### Clone repo with examples
 ```console
 cd
-git clone https://github.com/stockblog/webinar_spark_k8s/ webinar_spark_k8s
+git clone https://github.com/stockblog/webinar_spark_k8s/webinar_spark_k8s
 
 mv webinar_spark_k8s/custom_jobs/ $SPARK_HOME
 ```

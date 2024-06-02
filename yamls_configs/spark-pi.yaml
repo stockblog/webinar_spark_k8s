@@ -21,7 +21,7 @@ metadata:
 spec:
   type: Scala
   mode: cluster
-  image: "karpovcoursesregistry/spark:3.4.1"
+  image: "mirror.gcr.io/karpovcoursesregistry/spark:3.4.1"
   imagePullPolicy: Always
   mainClass: org.apache.spark.examples.SparkPi
   mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.4.1.jar"

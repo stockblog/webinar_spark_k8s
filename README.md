@@ -105,10 +105,10 @@ source ~/.profile
 ## Part 1. Spark operator installation
 
 ```console
-git clone https://github.com/GoogleCloudPlatform/spark-on-k8s-operator.git  
-
 ##Here we install specific version (1.1.25) because sometimes last versions has bugs.
-helm install my-release spark-on-k8s-operator/charts/spark-operator-chart --namespace spark-operator --create-namespace --set webhook.enable=true --version 1.1.25  
+helm repo add spark-operator https://kubeflow.github.io/spark-operator
+helm repo update
+helm install my-release spark-operator/spark-operator --namespace spark-operator --create-namespace --set webhook.enable=true --version 1.1.25
 
 #create service account, role and rolebinding for spark
 cat <<EOF | kubectl apply -f -
